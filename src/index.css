@@ -52,3 +52,13 @@ button {
 hr {
   margin: 20px 0;
 }
+
+.canvas {
+  background-color: aliceblue;
+  border: 1px solid black;
+}
+
+.description {
+  font-weight: normal;
+  font-size: 20px;
+}

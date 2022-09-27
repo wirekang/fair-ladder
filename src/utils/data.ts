@@ -1,3 +1,4 @@
+import { ANIM_FACTOR } from "./const";
 import { DBSchema } from "./db";
 
 export function getLatestRound(v: DBSchema) {
@@ -13,7 +14,7 @@ export function getLatestRoundKey(v: DBSchema) {
 export function getLatestRoundTitle(v: DBSchema) {
   const key = getLatestRoundKey(v);
   if (!key) {
-    return "Loading...";
+    return "Loading... 이게 보이면 새로고침하세요";
   }
 
   return new Date(Number(key)).toLocaleString();
@@ -47,4 +48,14 @@ export function getOptions(v: DBSchema): string[] {
   } catch {
     return [];
   }
+}
+
+export function randomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
+export async function sleep(n: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, n / ANIM_FACTOR);
+  });
 }
