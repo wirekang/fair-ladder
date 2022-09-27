@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  text-align: center;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.subTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.adminContainer {
+  margin: 100px 0;
+}
+
+.nameInput {
+  font-size: 30px;
+  text-align: center;
+}
+
+.optionInput {
+  font-size: 20px;
+  width: 600px;
+}
+
+.options {
+  margin-right: 10px;
+}
+
+.startButton {
+  margin: 40px 0;
+}
+
+button {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+hr {
+  margin: 20px 0;
+}
