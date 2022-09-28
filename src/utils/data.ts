@@ -50,8 +50,8 @@ export function getOptions(v: DBSchema): string[] {
   }
 }
 
-export function randomInt(max: number) {
-  return Math.floor(Math.random() * max);
+export function randomInt(exclusiveMax: number) {
+  return Math.floor(Math.random() * exclusiveMax);
 }
 
 export async function sleep(n: number) {

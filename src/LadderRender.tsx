@@ -17,7 +17,7 @@ export function LadderRender(props: Props): JSX.Element {
     }
 
     canvas.width = 1000;
-    canvas.height = 1400;
+    canvas.height = 1560;
     const ctx = canvas.getContext("2d");
     if (!ctx) {
       return;
@@ -39,9 +39,9 @@ export function LadderRender(props: Props): JSX.Element {
 
 const lineStartX = 50;
 const lineStartY = 100;
-const lineMarginX = 55;
-const lineMarginY = 10;
-const rowCount = 120;
+const lineMarginX = 60;
+const lineMarginY = 3;
+const rowCount = 450;
 
 /**
  * true: 좌
@@ -53,15 +53,21 @@ type LadderPoint = true | false | null;
 async function renderCanvas(ctx: CanvasRenderingContext2D, options: string[]) {
   const data: LadderPoint[][] = new Array(rowCount).fill(0).map(() =>
     options.map((_, i) => {
-      switch (randomInt(3)) {
+      switch (randomInt(9)) {
         case 0:
+        case 1:
+        case 2:
+        case 3:
           if (i === 0) {
-            return false;
+            return null;
           }
           return true;
-        case 1:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
           if (i === options.length - 1) {
-            return true;
+            return null;
           }
           return false;
         default:
@@ -73,15 +79,39 @@ async function renderCanvas(ctx: CanvasRenderingContext2D, options: string[]) {
   for (let i = 0; i < data.length; i += 1) {
     for (let j = 1; j < options.length - 1; j += 1) {
       const row = data[i][j];
-      if (row === true) {
-        data[i][j - 1] = null;
-      }
 
       if (row === false) {
-        data[i][j + 1] = null;
+        if (data[i][j + 1] !== true) {
+          data[i][j] = null;
+        }
+      } else if (row === true) {
+        if (data[i][j - 1] !== false) {
+          data[i][j] = null;
+        }
       }
     }
   }
+
+  let leftCount = 0;
+  let rightCount = 0;
+  let downCount = 0;
+  for (let i = 0; i < data.length; i += 1) {
+    for (let j = 1; j < options.length - 1; j += 1) {
+      const row = data[i][j];
+
+      if (row === false) {
+        rightCount++;
+      }
+
+      if (row === true) {
+        leftCount++;
+      }
+      if (row === null) {
+        downCount++;
+      }
+    }
+  }
+  console.log(leftCount, rightCount, downCount);
 
   ctx.strokeStyle = "black";
   ctx.font = "20px monospace";
@@ -90,7 +120,7 @@ async function renderCanvas(ctx: CanvasRenderingContext2D, options: string[]) {
     const option = options[i];
     const x = lineStartX + lineMarginX * i;
     const yEnd = lineStartY + lineMarginY * (rowCount + 1);
-    await lineTo(ctx, x, lineStartX, x, yEnd, 0, 4);
+    await lineTo(ctx, x, lineStartX, x, yEnd, 0, 10);
     ctx.strokeText(option.substring(0, 2), x, yEnd + 20);
     ctx.strokeText(option.substring(2, 4), x, yEnd + 40);
     ctx.strokeText(option.substring(4), x, yEnd + 60);
@@ -105,10 +135,10 @@ async function renderCanvas(ctx: CanvasRenderingContext2D, options: string[]) {
       y += lineMarginY;
       switch (row) {
         case true:
-          await lineTo(ctx, x, y, x - lineMarginX, y, -5, 0, undefined, true);
+          await lineTo(ctx, x, y, x - lineMarginX, y, -50, 0, undefined, true);
           break;
         case false:
-          await lineTo(ctx, x, y, x + lineMarginX, y, 5, 0, undefined, true);
+          await lineTo(ctx, x, y, x + lineMarginX, y, 50, 0, undefined, true);
           break;
       }
     }
@@ -132,27 +162,27 @@ async function renderCanvas(ctx: CanvasRenderingContext2D, options: string[]) {
     let y = lineStartY;
     ctx.strokeStyle = "red";
     let currentIndex = startIndex;
-    await lineTo(ctx, x, y - 20, x, y + lineMarginY, 0, 1, 3);
+    await lineTo(ctx, x, y - 20, x, y + lineMarginY, 0, 3, 3);
     y += lineMarginY;
-    for (let i = 0; i < data.length; ) {
+    for (let i = 0; i < data.length; i += 1) {
       const row = data[i][currentIndex];
       switch (row) {
         case true:
-          await lineTo(ctx, x, y, x - lineMarginX, y, -1, 0, 3);
+          await lineTo(ctx, x, y, x - lineMarginX, y, -2, 0, 3);
           currentIndex--;
           x -= lineMarginX;
           break;
         case false:
-          await lineTo(ctx, x, y, x + lineMarginX, y, 1, 0, 3);
+          await lineTo(ctx, x, y, x + lineMarginX, y, 2, 0, 3);
           currentIndex++;
           x += lineMarginX;
           break;
         default:
-          await lineTo(ctx, x, y, x, y + lineMarginY, 0, 1, 3);
-          y += lineMarginY;
-          i += 1;
       }
-      await sleep(200);
+
+      await lineTo(ctx, x, y, x, y + lineMarginY, 0, 2, 3);
+      y += lineMarginY;
+      await sleep(100);
     }
     ctx.font = "40px monospace";
     ctx.lineWidth = 3;
@@ -196,7 +226,7 @@ async function lineTo(
     ctx.lineWidth = lineWidth ?? 1.5;
 
     if (xFinish && yFinish) {
-      if (isArrow) {
+      if (false && isArrow) {
         canvas_arrow(ctx, startX, startY, x, y);
       } else {
         ctx.moveTo(startX, startY);
