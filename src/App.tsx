@@ -52,6 +52,7 @@ function App() {
   const onLadder = () => {
     setIsLadder(true);
   };
+  const users = getUsers(data);
 
   return (
     <div className="App">
@@ -59,13 +60,14 @@ function App() {
       <div className="title">{`${latestRoundTitle}`}</div>
 
       <hr />
-      <div>현재 등록한 사람 명단</div>
-      {getUsers(data).map(([userName]) => (
-        <span key={userName}>{userName},</span>
-      ))}
+      <div className="subTitle">
+        현재 선택지를 등록한 사람들:
+        <div className="title">{users.join(", ")}</div>
+      </div>
       <hr />
       <div className="subTitle">
-        {userName}님 선택지를 입력하세요. (쉼표로 구분, 최대 {MAX_OPTION}개까지 입력 가능)
+        {userName}님 선택지들을 입력하고 엔터를 누르세요.
+        <div>(쉼표로 구분, 최대 {MAX_OPTION}개까지 입력 가능, 바꾸려면 다시 입력하고 엔터)</div>
       </div>
       <div>
         <div>현재 등록된 선택지:</div>
@@ -86,12 +88,14 @@ function App() {
           }
         }}
       />
-
-      <div>
-        <button className="startButton" onClick={onLadder}>
-          사다리타기 시작
-        </button>
-      </div>
+      <hr />
+      {users.length > 1 && (
+        <div>
+          <button className="startButton" onClick={onLadder}>
+            사다리타기 시작
+          </button>
+        </div>
+      )}
 
       {isAdmin() && <Admin />}
     </div>

@@ -28,11 +28,11 @@ export function getMyOptions(v: DBSchema, userName: string) {
   }
 }
 
-export function getUsers(v: DBSchema): [userName: string, options: string][] {
+export function getUsers(v: DBSchema): string[] {
   try {
     const round = getLatestRound(v);
     return Object.keys(round.user).map((user) => {
-      return [user, round.user[user].options];
+      return user;
     });
   } catch {
     return [];

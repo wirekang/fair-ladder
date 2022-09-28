@@ -1,4 +1,4 @@
-import { get, onValue, ref, set } from "firebase/database";
+import { get, onValue, ref, remove, set } from "firebase/database";
 import { MAX_OPTION } from "./const";
 import { getLatestRoundKey } from "./data";
 import { firebaseDatabase } from "./firebase";
@@ -16,8 +16,12 @@ export interface User {
 }
 
 export async function createRound() {
+  const bkup = listeners;
+  listeners = [];
+  await remove(ref(firebaseDatabase));
+  listeners = bkup;
   const key = Date.now();
-  set(ref(firebaseDatabase, `round/${key}`), "");
+  await set(ref(firebaseDatabase, `round/${key}`), "");
   return key;
 }
 
